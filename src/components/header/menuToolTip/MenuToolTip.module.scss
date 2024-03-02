@@ -1,0 +1,11 @@
+.menuToolTip {
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
+    font-size: 30px;
+    color: #b8b8b8;
+    transition: color 0.2s ease;
+    &:hover {
+        color: #000;
+    }
+}

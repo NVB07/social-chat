@@ -1,0 +1,41 @@
+.header {
+    width: 100%;
+    height: 74px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 49;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffffd8;
+    backdrop-filter: blur(28.5px);
+    .headerWraper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 1230px;
+        .brand {
+            width: 74px;
+            height: 74px;
+            padding: 18px;
+
+            a {
+                display: block;
+                transition: transform 0.15s ease;
+                &:hover {
+                    transform: scale(1.05);
+                }
+                &:active {
+                    transform: scale(0.9);
+                }
+            }
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+            path {
+                fill: var(--foreground-color);
+            }
+        }
+    }
+}

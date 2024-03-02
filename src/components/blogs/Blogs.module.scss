@@ -1,0 +1,108 @@
+.blogs {
+    padding: 12px 0;
+    border-top: 1px solid #d9d9d9;
+    display: flex;
+    .leftBlog {
+        min-width: 48px;
+        width: 48px;
+        max-width: 48px;
+        display: flex;
+        flex-direction: column;
+
+        .blogLine {
+            padding-top: 7px;
+            width: 36px;
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            .line {
+                width: 2px;
+                height: 100%;
+                background-color: #e5e5e5;
+                position: relative;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    width: 15px;
+                    height: 15px;
+                    background-color: #e5e5e5;
+                    border-radius: 50%;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+        .modalCard {
+            img {
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                object-fit: cover;
+                cursor: pointer;
+            }
+        }
+    }
+    .rightBlog {
+        flex: 1;
+        .topBlog {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            height: 21px;
+            margin-bottom: 5px;
+            a {
+                font-weight: 700;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .blogTime {
+                color: #acacac;
+                font-size: 14px;
+            }
+        }
+        .content {
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+        .blogImage {
+            width: 100%;
+            img {
+                border-radius: 8px;
+            }
+        }
+        .react {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            .reactLike,
+            .reactComment,
+            .reactShare {
+                width: 36px;
+                height: 36px;
+                margin-right: 3px;
+                button {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    width: 100%;
+                    height: 100%;
+                    background-color: transparent;
+                    font-size: 22px;
+                    color: var(--foreground-color);
+                    transition: background-color 0.2s ease;
+                    &:hover {
+                        background-color: #e5e5e5;
+                    }
+                }
+            }
+        }
+        .countLike {
+            margin-top: 10px;
+            color: #acacac;
+        }
+    }
+}
