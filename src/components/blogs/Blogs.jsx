@@ -9,6 +9,7 @@ import { SlOptions } from "react-icons/sl";
 
 import { deleteDocument, handleReact } from "@/firebase/services";
 import style from "./Blogs.module.scss";
+import ViewPhoto from "../viewPhoto/ViewPhoto";
 
 const Blogs = ({
     blogid,
@@ -104,7 +105,11 @@ const Blogs = ({
                 </div>
                 <div className={style.content}>{elements}</div>
                 <div className={style.blogImage}>
-                    {imageSrc ? <Image style={{ width: "100%", height: "auto" }} src={imageSrc} width={1000} height={1000} alt="image" /> : null}
+                    {imageSrc ? (
+                        <ViewPhoto photoURL={imageSrc}>
+                            <Image style={{ width: "100%", height: "auto" }} src={imageSrc} width={1000} height={1000} alt="image" />
+                        </ViewPhoto>
+                    ) : null}
                 </div>
                 <div className={style.react}>
                     <div className={style.reactLike}>

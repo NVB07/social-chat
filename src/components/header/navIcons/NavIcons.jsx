@@ -31,9 +31,11 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
         inputImageRef.current.click();
     });
     const handleRemoveImage = useCallback(() => {
-        setPreviewImageState(false);
-        inputImageRef.current.value = null;
-        setImageFile(null);
+        if (inputImageRef.current && inputImageRef.current.value) {
+            setPreviewImageState(false);
+            inputImageRef.current.value = null;
+            setImageFile(null);
+        }
     });
 
     const handleCloseModal = useCallback(() => {
@@ -84,9 +86,9 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
                 },
             },
         }).then(() => {
+            setLoading(false);
             handleCloseModal();
             close();
-            setLoading(false);
         });
     });
 

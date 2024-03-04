@@ -1,8 +1,8 @@
 "use client";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
-
-import { useEffect, useState, useCallback, useContext } from "react";
 import { fireStore } from "@/firebase/config";
+import { Card, Skeleton } from "@nextui-org/react";
+import { useEffect, useState, useCallback, useContext } from "react";
 
 import { AuthContext } from "@/authProvider/AuthProvider";
 import Blogs from "../blogs/Blogs";
@@ -41,6 +41,36 @@ const MainContent = () => {
         return () => unsubscribe();
     }, []);
 
+    if (posts.length === 0) {
+        return (
+            <main className={style.main}>
+                <div className={style.block}>
+                    <div className="w-[620px]  flex " radius="lg">
+                        <div className="w-12">
+                            <Skeleton className="w-9 h-9 rounded-full"></Skeleton>
+                        </div>
+                        <div className="flex-1 ">
+                            <div className="space-y-2 mb-2">
+                                <Skeleton className="w-36 h-5 rounded-lg"></Skeleton>
+                                <Skeleton className="w-4/5 rounded-lg">
+                                    <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                                </Skeleton>
+                                <Skeleton className="w-2/5 rounded-lg">
+                                    <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                                </Skeleton>
+                                <Skeleton className="w-2/6 rounded-lg">
+                                    <div className="h-3 w-2/6 rounded-lg bg-default-300"></div>
+                                </Skeleton>
+                            </div>
+                            <Skeleton className="rounded-lg">
+                                <div className="h-60 rounded-lg bg-default-300"></div>
+                            </Skeleton>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        );
+    }
     return (
         <main className={style.main}>
             <div className={style.block}>
