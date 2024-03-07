@@ -1,13 +1,17 @@
+"use client";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { Popover, PopoverTrigger, PopoverContent, Button } from "@nextui-org/react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/config";
+import { useRouter } from "next/navigation";
 
 import style from "./MenuToolTip.module.scss";
 const MenuToolTip = () => {
+    const router = useRouter();
     const handleSignOut = async () => {
         try {
             await signOut(auth);
+            await router.push("/login");
         } catch (error) {
             console.error("Lỗi khi đăng xuất", error);
         }

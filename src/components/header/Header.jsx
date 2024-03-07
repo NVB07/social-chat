@@ -9,7 +9,7 @@ const Header = ({ home = false, search = false, newPost = false, chat = false, a
         <header className={style.header}>
             <div className={style.headerWraper}>
                 <div className={style.brand}>
-                    <Link href={"/"}>
+                    <Link scroll={false} href={"/"}>
                         <BrandLogo color="black" />
                     </Link>
                 </div>

@@ -94,10 +94,10 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
 
     return (
         <nav className={style.navIcons}>
-            <Link className={style.navLink} href={"/"} style={home ? { color: "black" } : { color: "#b8b8b8" }}>
+            <Link scroll={false} className={style.navLink} href={"/"} style={home ? { color: "black" } : { color: "#b8b8b8" }}>
                 {home ? <GoHomeFill /> : <GoHome />}
             </Link>
-            <Link className={style.navLink} href={"/search"} style={search ? { color: "black" } : { color: "#b8b8b8" }}>
+            <Link scroll={false} className={style.navLink} href={"/search"} style={search ? { color: "black" } : { color: "#b8b8b8" }}>
                 <FiSearch />
             </Link>
             <Button onPress={onOpen} className={style.navLink} style={newPost ? { color: "black" } : { color: "#b8b8b8" }}>
@@ -196,10 +196,10 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
                     )}
                 </ModalContent>
             </Modal>
-            <Link className={style.navLink} href={"/"} style={chat ? { color: "black" } : { color: "#b8b8b8" }}>
+            <Link scroll={false} className={style.navLink} href={"/"} style={chat ? { color: "black" } : { color: "#b8b8b8" }}>
                 {chat ? <IoChatboxEllipses /> : <IoChatboxEllipsesOutline />}
             </Link>
-            <Link className={style.navLink} href={"/user/@" + data?.uid} style={about ? { color: "black" } : { color: "#b8b8b8" }}>
+            <Link scroll={false} className={style.navLink} href={"/user/@" + data?.uid} style={about ? { color: "black" } : { color: "#b8b8b8" }}>
                 {about ? <TbUserFilled /> : <TbUser />}
             </Link>
         </nav>
