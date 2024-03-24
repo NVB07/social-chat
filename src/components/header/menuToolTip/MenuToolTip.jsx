@@ -11,7 +11,7 @@ const MenuToolTip = () => {
     const handleSignOut = async () => {
         try {
             await signOut(auth);
-            await router.push("/login");
+            await router.push("/");
         } catch (error) {
             console.error("Lỗi khi đăng xuất", error);
         }

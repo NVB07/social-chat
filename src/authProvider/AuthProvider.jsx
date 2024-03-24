@@ -5,6 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter, usePathname } from "next/navigation";
 import { NextUIProvider } from "@nextui-org/react";
 import Loading from "@/components/loading/Loading";
+import Login from "@/components/pages/login/Login";
 
 export const AuthContext = createContext();
 
@@ -21,19 +22,16 @@ const AuthProvider = ({ children }) => {
                 const { displayName, email, uid, photoURL } = user;
                 setUserData({ displayName, email, uid, photoURL });
                 setIsLoading(false);
-                if (pathname === "/login") {
-                    router.push("/");
-                }
             } else {
                 setIsLoading(false);
                 setUserData(null);
-                router.push("/login");
+                router.push("/");
             }
         });
         return () => unsubscribe();
     }, [pathname]);
 
-    return <AuthContext.Provider value={userData}>{isLoading ? <Loading /> : <NextUIProvider>{children}</NextUIProvider>}</AuthContext.Provider>;
+    return <AuthContext.Provider value={userData}>{isLoading ? <Loading /> : userData ? <NextUIProvider>{children}</NextUIProvider> : <Login />}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
