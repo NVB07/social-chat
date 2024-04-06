@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter, usePathname } from "next/navigation";
 import { NextUIProvider } from "@nextui-org/react";
 import Loading from "@/components/loading/Loading";
-import Login from "@/components/pages/login/Login";
+import Login from "@/components/login/Login";
 
 export const AuthContext = createContext();
 
@@ -14,7 +14,6 @@ const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const router = useRouter();
-    const pathname = usePathname();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -25,11 +24,11 @@ const AuthProvider = ({ children }) => {
             } else {
                 setIsLoading(false);
                 setUserData(null);
-                router.push("/");
+                router.push("/", { scroll: false });
             }
         });
         return () => unsubscribe();
-    }, [pathname]);
+    }, []);
 
     return <AuthContext.Provider value={userData}>{isLoading ? <Loading /> : userData ? <NextUIProvider>{children}</NextUIProvider> : <Login />}</AuthContext.Provider>;
 };

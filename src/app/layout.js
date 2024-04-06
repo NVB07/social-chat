@@ -1,5 +1,4 @@
 import localFont from "next/font/local";
-import Header from "@/components/header/Header";
 import AuthProvider from "@/authProvider/AuthProvider";
 import "./globals.css";
 

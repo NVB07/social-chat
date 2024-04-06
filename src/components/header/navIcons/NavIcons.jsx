@@ -29,14 +29,14 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
 
     const handleSelectImage = useCallback(() => {
         inputImageRef.current.click();
-    });
+    }, []);
     const handleRemoveImage = useCallback(() => {
         if (inputImageRef.current && inputImageRef.current.value) {
             setPreviewImageState(false);
             inputImageRef.current.value = null;
             setImageFile(null);
         }
-    });
+    }, []);
 
     const handleCloseModal = useCallback(() => {
         setPostContent("");
@@ -44,7 +44,7 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
         onOpenChange();
     });
 
-    const previewImage = useCallback((event) => {
+    const previewImage = (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -58,9 +58,9 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
             reader.readAsDataURL(file);
             setPreviewImageState(true);
         }
-    });
+    };
 
-    const handleNewPost = useCallback(async (close) => {
+    const handleNewPost = async (close) => {
         setLoading(true);
         const formattedContent = postContent.replace(/\n/g, "|~n|");
         await addDocument("blogs", {
@@ -70,7 +70,7 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
                 photoURL: data?.photoURL,
             },
             post: {
-                content: formattedContent.trim(),
+                content: formattedContent,
                 imageURL: imageFile ? await addFileToStorage(imageFile.reader?.result, "imagePostBlogs/", imageFile.name) : "",
                 reaction: {
                     liked: 0,
@@ -90,7 +90,7 @@ const NavIcons = ({ home = false, search = false, newPost = false, chat = false,
             handleCloseModal();
             close();
         });
-    });
+    };
 
     return (
         <nav className={style.navIcons}>

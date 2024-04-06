@@ -2,7 +2,7 @@
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { fireStore } from "@/firebase/config";
 import { Card, Skeleton } from "@nextui-org/react";
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState, useCallback, useContext, memo } from "react";
 
 import { AuthContext } from "@/authProvider/AuthProvider";
 import Blogs from "../blogs/Blogs";
@@ -12,7 +12,6 @@ const MainContent = () => {
     const currentUserData = useContext(AuthContext);
 
     const [posts, setPosts] = useState([]);
-
     const handleConvertDate = useCallback((timestamp) => {
         if (timestamp) {
             const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
@@ -27,18 +26,29 @@ const MainContent = () => {
             return time;
         }
         return "?";
-    });
+    }, []);
 
     useEffect(() => {
-        const q = query(collection(fireStore, "blogs"), orderBy("createAt", "desc"));
+        const q = query(collection(fireStore, "blogs"), orderBy("createAt", "asc"));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const postsArray = [];
-            querySnapshot.forEach((doc) => {
-                postsArray.push({ data: doc.data(), id: doc.id });
+            querySnapshot.docChanges().forEach((change) => {
+                const doc = change.doc;
+                const blogData = { data: doc.data(), id: doc.id };
+                switch (change.type) {
+                    case "added":
+                        setPosts((prevPosts) => [blogData, ...prevPosts]);
+                        break;
+                    case "modified":
+                        setPosts((prevPosts) => prevPosts.map((post) => (post.id === doc.id ? blogData : post)));
+                        break;
+                    case "removed":
+                        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== doc.id));
+                        break;
+                    default:
+                        break;
+                }
             });
-            setPosts(postsArray);
         });
-
         return () => unsubscribe();
     }, []);
 
@@ -77,7 +87,7 @@ const MainContent = () => {
             <div className={style.block}>
                 {posts.map((post) => {
                     return (
-                        <Blogs
+                        <MemoizedBlogs
                             key={post.id}
                             currentUserData={currentUserData}
                             blogid={post.id}
@@ -102,4 +112,5 @@ const MainContent = () => {
     );
 };
 
+const MemoizedBlogs = memo(Blogs);
 export default MainContent;

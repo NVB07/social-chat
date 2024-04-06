@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useState, Fragment, useCallback, useContext } from "react";
-import { Button, Image, Spinner, Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import { useState, Fragment, useCallback } from "react";
+import Image from "next/image";
+import { Button, Popover, PopoverTrigger, PopoverContent, Modal, ModalContent, ModalHeader, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { RxChatBubble } from "react-icons/rx";
 import { IoPaperPlaneOutline } from "react-icons/io5";
@@ -27,6 +28,8 @@ const Blogs = ({
     const isAuthor = currentUserData?.uid === authorid;
     const [likePost, setLikePost] = useState(liked);
     const [loading, setLoading] = useState(false);
+    const [isPopoverOpen, setPopoverOpen] = useState(false);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const getPathImage = useCallback(() => {
         if (imageSrc) {
@@ -37,7 +40,7 @@ const Blogs = ({
             return decodeURIComponent(encodedImagePath);
         }
         return null;
-    });
+    }, []);
 
     // get path image
     const parts = content.split("|~n|");
@@ -51,16 +54,16 @@ const Blogs = ({
     const handleLikePost = useCallback(() => {
         handleReact(blogid, { displayName: currentUserData.displayName, uid: currentUserData.uid, photoURL: currentUserData.photoURL });
         setLikePost((prev) => !prev);
-    });
+    }, []);
 
-    const handleEdit = useCallback(() => {});
+    const handleEdit = useCallback(() => {}, []);
 
     const handleDelete = useCallback(async () => {
         setLoading(true);
         await deleteDocument("blogs", blogid, getPathImage()).then(() => {
             setLoading(false);
         });
-    });
+    }, []);
 
     return (
         <div className={style.blogs}>
@@ -81,7 +84,7 @@ const Blogs = ({
                         <div className={style.blogTime}>{postTime}</div>
                         <>
                             {isAuthor ? (
-                                <Popover placement="bottom-end">
+                                <Popover placement="bottom-end" isOpen={isPopoverOpen} onOpenChange={setPopoverOpen}>
                                     <PopoverTrigger>
                                         <Button variant="light" size="sm" radius="full" isIconOnly>
                                             <SlOptions color="#444444" />
@@ -93,13 +96,57 @@ const Blogs = ({
                                                 Edit post
                                             </Button>
 
-                                            <Button onClick={handleDelete} className="w-full flex justify-start px-2 hover:!bg-transparent text-red-600" variant="light">
-                                                {loading ? <Spinner label="Danger" size="sm" color="danger" labelColor="danger" /> : "Delete post"}
+                                            <Button
+                                                onClick={() => setPopoverOpen(false)}
+                                                onPress={onOpen}
+                                                className="w-full flex justify-start px-2 hover:!bg-transparent text-red-600"
+                                                variant="light"
+                                            >
+                                                Delete post
                                             </Button>
                                         </div>
                                     </PopoverContent>
                                 </Popover>
                             ) : null}
+                            <Modal
+                                isOpen={isOpen}
+                                placement="center"
+                                onOpenChange={onOpenChange}
+                                motionProps={{
+                                    variants: {
+                                        enter: {
+                                            y: 0,
+                                            opacity: 1,
+                                            transition: {
+                                                duration: 0.3,
+                                                ease: "easeOut",
+                                            },
+                                        },
+                                        exit: {
+                                            y: -20,
+                                            opacity: 0,
+                                            transition: {
+                                                duration: 0.2,
+                                                ease: "easeIn",
+                                            },
+                                        },
+                                    },
+                                }}
+                            >
+                                <ModalContent>
+                                    {(onClose) => (
+                                        <>
+                                            <ModalHeader className="flex flex-col gap-1">Do you want delete this blog ?</ModalHeader>
+
+                                            <ModalFooter>
+                                                <Button color="danger" onClick={handleDelete} onPress={onClose}>
+                                                    Delete
+                                                </Button>
+                                            </ModalFooter>
+                                        </>
+                                    )}
+                                </ModalContent>
+                            </Modal>
                         </>
                     </div>
                 </div>
@@ -107,7 +154,7 @@ const Blogs = ({
                 <div className={style.blogImage}>
                     {imageSrc ? (
                         <ViewPhoto photoURL={imageSrc}>
-                            <Image style={{ width: "100%", height: "auto" }} src={imageSrc} width={1000} height={1000} alt="image" />
+                            <Image style={{ width: "100%", height: "auto" }} src={imageSrc} width={600} height={0} alt="image" />
                         </ViewPhoto>
                     ) : null}
                 </div>
